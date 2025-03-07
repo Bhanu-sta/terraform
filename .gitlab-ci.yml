@@ -1,0 +1,16 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker build -t my-web-app .
+    - docker tag my-web-app bhanu2005/my-web-app:latest
+    - docker push bhanu2005/my-web-app:latest
+
+deploy:
+  stage: deploy
+  script:
+    - ssh adminuser@51.142.206.94 "docker pull bhanu2005/my-web-app:latest"
+    - ssh adminuser@51.142.206.94 "docker run -d -p 80:80 bhanu2005/my-web-app"
